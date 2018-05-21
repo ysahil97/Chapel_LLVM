@@ -1,0 +1,24 @@
+cs15btech11044@narmada:~/list_of_llvms/llvm_polly_fixes/generated_ir$ ../../llvm_polly_3/llvm_build/bin/opt affine_canonicalized_2d.ll -O3 -polly -analyze -pass-remarks=polly-detect -pass-remarks-missed=polly-detect
+remark: affine_2d.chpl:6:0: The following errors keep this region from being a Scop.
+remark: affine_2d.chpl:8:0: Failed to derive an affine function from the loop bounds.
+remark: affine_2d.chpl:8:0: Invalid Scop candidate ends here.
+remark: affine_2d.chpl:6:0: The following errors keep this region from being a Scop.
+remark: affine_2d.chpl:6:0: No profitable polyhedral optimization found
+remark: affine_2d.chpl:8:0: Invalid Scop candidate ends here.
+
+cs15btech11044@narmada:~/list_of_llvms/llvm_polly_fixes/generated_ir$ ../../llvm_polly_3/llvm_build/bin/opt affine_canonicalized_2mm.ll -polly-scops -debug-only=polly-scops
+(No output)
+
+cs15btech11044@narmada:~/list_of_llvms/llvm_polly_fixes/generated_ir$ ../../llvm_polly_3/llvm_build/bin/opt affine_2d.ll -analyze -polly-process-unprofitable -polly-canonicalize -polly-scops -debug-only=polly-scops
+Printing analysis 'Polly - Run canonicalization passes':
+Printing analysis 'Polly - Create polyhedral description of Scops' for region: '%9 => .loopexit' in function 'test_chpl':
+Invalid Scop!
+Printing analysis 'Polly - Create polyhedral description of Scops' for region: '%4 => %19' in function 'test_chpl':
+Invalid Scop!
+Printing analysis 'Polly - Create polyhedral description of Scops' for region: '%4 => .loopexit3' in function 'test_chpl':
+Invalid Scop!
+Printing analysis 'Polly - Create polyhedral description of Scops' for region: '.split => %21' in function 'test_chpl':
+Invalid Scop!
+Printing analysis 'Polly - Create polyhedral description of Scops' for region: '%0 => <Function Return>' in function 'test_chpl':
+Invalid Scop!
+

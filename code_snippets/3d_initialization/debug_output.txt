@@ -1,0 +1,129 @@
+cs15btech11044@narmada:~/list_of_llvms/llvm_polly_fixes/generated_ir$ ../../llvm_polly_3/llvm_build/bin/opt affine_canonicalized_3d.ll -O3 -polly -analyze -polly-process-unprofitable -pass-remarks=polly-detect -pass-remarks-missed=polly-detect
+remark: affine_3d.chpl:6:0: The following errors keep this region from being a Scop.
+remark: affine_3d.chpl:9:0: The array subscript of "UNKNOWN" is not affine
+remark: affine_3d.chpl:9:0: Invalid Scop candidate ends here.
+remark: affine_3d.chpl:6:0: The following errors keep this region from being a Scop.
+remark: affine_3d.chpl:7:0: Failed to derive an affine function from the loop bounds.
+remark: affine_3d.chpl:9:0: Invalid Scop candidate ends here.
+remark: affine_3d.chpl:7:0: The following errors keep this region from being a Scop.
+remark: affine_3d.chpl:9:0: The array subscript of "UNKNOWN" is not affine
+remark: affine_3d.chpl:9:0: Invalid Scop candidate ends here.
+
+cs15btech11044@narmada:~/list_of_llvms/llvm_polly_fixes/generated_ir$ ../../llvm_polly_3/llvm_build/bin/opt affine_canonicalized_3d.ll -O3 -polly-scops -polly-process-unprofitable -debug-only=polly-scops
+WARNING: You're attempting to print out a bitcode file.
+This is inadvisable as it may cause display problems. If
+you REALLY want to taste LLVM bitcode first-hand, you
+can force output with the `-f' option.
+
+    Function: test_chpl
+    Region: %.preheader---%.loopexit
+    Max Loop Depth:  1
+    Invariant Accesses: {
+    }
+    Context:
+    [p_0, p_1, p_2, p_3, p_4] -> {  : -9223372036854775808 <= p_0 <= 9223372036854775807 and -9223372036854775808 <= p_1 <= 9223372036854775807 and -9223372036854775808 <= p_2 <= 9223372036854775807 and -9223372036854775808 <= p_3 <= 9223372036854775807 and -9223372036854775808 <= p_4 <= 9223372036854775807 }
+    Assumed Context:
+    [p_0, p_1, p_2, p_3, p_4] -> {  :  }
+    Invalid Context:
+    [p_0, p_1, p_2, p_3, p_4] -> {  : p_0 > 0 and (p_0 >= 1152921504606846977 or p_4 <= -1152921504606846978 - p_1 - p_2 - p_3 or p_4 <= -1152921504606846978 - p_2 - p_3 or p_4 <= -1152921504606846978 - p_3 or p_1 <= -1152921504606846977 or p_2 <= -1152921504606846977 or p_2 >= 1152921504606846976 or p_1 >= 1152921504606846976 or p_4 >= 1152921504606846976 - p_0 - p_1 - p_2 - p_3 or p_4 >= 1152921504606846975 - p_3 or p_4 >= 1152921504606846975 - p_2 - p_3) }
+    p0: %0
+    p1: {0,+,%9}<nw><%.preheader3>
+    p2: {0,+,%7}<nw><%10>
+    p3: %9
+    p4: %7
+    Arrays {
+        double MemRef0[*]; // Element size 8
+    }
+    Arrays (Bounds as pw_affs) {
+        double MemRef0[*]; // Element size 8
+    }
+    Alias Groups (0):
+        n/a
+    Statements {
+    	Stmt0
+            Domain :=
+                [p_0, p_1, p_2, p_3, p_4] -> { Stmt0[i0] : 0 <= i0 < p_0 };
+            Schedule :=
+                [p_0, p_1, p_2, p_3, p_4] -> { Stmt0[i0] -> [i0] };
+            MustWriteAccess :=	[Reduction Type: NONE] [Scalar: 0]
+                [p_0, p_1, p_2, p_3, p_4] -> { Stmt0[i0] -> MemRef0[1 + p_1 + p_2 + p_3 + p_4 + i0] };
+    }
+
+
+cs15btech11044@narmada:~/list_of_llvms/llvm_polly_fixes/generated_ir$ ../../llvm_polly_3/llvm_build/bin/opt affine_3d.ll -O3 -analyze -polly-process-unprofitable -polly-canonicalize -polly-scops -debug-only=polly-scops
+Printing analysis 'Polly - Run canonicalization passes':
+    Function: test_chpl
+    Region: %12---%.loopexit.us.us
+    Max Loop Depth:  1
+    Invariant Accesses: {
+    }
+    Context:
+    [p_0, p_1, p_2, p_3, p_4] -> {  : -9223372036854775808 <= p_0 <= 9223372036854775807 and -9223372036854775808 <= p_1 <= 9223372036854775807 and -9223372036854775808 <= p_2 <= 9223372036854775807 and -9223372036854775808 <= p_3 <= 9223372036854775807 and -9223372036854775808 <= p_4 <= 9223372036854775807 }
+    Assumed Context:
+    [p_0, p_1, p_2, p_3, p_4] -> {  :  }
+    Invalid Context:
+    [p_0, p_1, p_2, p_3, p_4] -> {  : p_0 > 0 and (p_0 >= 1152921504606846977 or p_4 <= -1152921504606846978 - p_1 - p_2 - p_3 or p_4 <= -1152921504606846978 - p_2 - p_3 or p_4 <= -1152921504606846978 - p_3 or p_1 <= -1152921504606846977 or p_2 <= -1152921504606846977 or p_2 >= 1152921504606846976 or p_1 >= 1152921504606846976 or p_4 >= 1152921504606846976 - p_0 - p_1 - p_2 - p_3 or p_4 >= 1152921504606846975 - p_3 or p_4 >= 1152921504606846975 - p_2 - p_3) }
+    p0: %1
+    p1: {0,+,%.pre45.pre}<nw><%.preheader.us.us>
+    p2: {0,+,%.pre44.pre}<nw><%.preheader32.us>
+    p3: %.pre45.pre
+    p4: %.pre44.pre
+    Arrays {
+        double MemRef0[*]; // Element size 8
+    }
+    Arrays (Bounds as pw_affs) {
+        double MemRef0[*]; // Element size 8
+    }
+    Alias Groups (0):
+        n/a
+    Statements {
+    	Stmt0
+            Domain :=
+                [p_0, p_1, p_2, p_3, p_4] -> { Stmt0[i0] : 0 <= i0 < p_0 };
+            Schedule :=
+                [p_0, p_1, p_2, p_3, p_4] -> { Stmt0[i0] -> [i0] };
+            MustWriteAccess :=	[Reduction Type: NONE] [Scalar: 0]
+                [p_0, p_1, p_2, p_3, p_4] -> { Stmt0[i0] -> MemRef0[1 + p_1 + p_2 + p_3 + p_4 + i0] };
+    }
+Printing analysis 'Polly - Create polyhedral description of Scops' for region: '%12 => .loopexit.us.us' in function 'test_chpl':
+    Function: test_chpl
+    Region: %12---%.loopexit.us.us
+    Max Loop Depth:  1
+    Invariant Accesses: {
+    }
+    Context:
+    [p_0, p_1, p_2, p_3, p_4] -> {  : -9223372036854775808 <= p_0 <= 9223372036854775807 and -9223372036854775808 <= p_1 <= 9223372036854775807 and -9223372036854775808 <= p_2 <= 9223372036854775807 and -9223372036854775808 <= p_3 <= 9223372036854775807 and -9223372036854775808 <= p_4 <= 9223372036854775807 }
+    Assumed Context:
+    [p_0, p_1, p_2, p_3, p_4] -> {  :  }
+    Invalid Context:
+    [p_0, p_1, p_2, p_3, p_4] -> {  : p_0 > 0 and (p_0 >= 1152921504606846977 or p_4 <= -1152921504606846978 - p_1 - p_2 - p_3 or p_4 <= -1152921504606846978 - p_2 - p_3 or p_4 <= -1152921504606846978 - p_3 or p_1 <= -1152921504606846977 or p_2 <= -1152921504606846977 or p_2 >= 1152921504606846976 or p_1 >= 1152921504606846976 or p_4 >= 1152921504606846976 - p_0 - p_1 - p_2 - p_3 or p_4 >= 1152921504606846975 - p_3 or p_4 >= 1152921504606846975 - p_2 - p_3) }
+    p0: %1
+    p1: {0,+,%.pre45.pre}<nw><%.preheader.us.us>
+    p2: {0,+,%.pre44.pre}<nw><%.preheader32.us>
+    p3: %.pre45.pre
+    p4: %.pre44.pre
+    Arrays {
+        double MemRef0[*]; // Element size 8
+    }
+    Arrays (Bounds as pw_affs) {
+        double MemRef0[*]; // Element size 8
+    }
+    Alias Groups (0):
+        n/a
+    Statements {
+    	Stmt0
+            Domain :=
+                [p_0, p_1, p_2, p_3, p_4] -> { Stmt0[i0] : 0 <= i0 < p_0 };
+            Schedule :=
+                [p_0, p_1, p_2, p_3, p_4] -> { Stmt0[i0] -> [i0] };
+            MustWriteAccess :=	[Reduction Type: NONE] [Scalar: 0]
+                [p_0, p_1, p_2, p_3, p_4] -> { Stmt0[i0] -> MemRef0[1 + p_1 + p_2 + p_3 + p_4 + i0] };
+    }
+Printing analysis 'Polly - Create polyhedral description of Scops' for region: '.preheader.us.us => .loopexit33.us-lcssa.us.us' in function 'test_chpl':
+Invalid Scop!
+Printing analysis 'Polly - Create polyhedral description of Scops' for region: '.preheader32.us => .loopexit35.loopexit' in function 'test_chpl':
+Invalid Scop!
+Printing analysis 'Polly - Create polyhedral description of Scops' for region: '.split => .loopexit35' in function 'test_chpl':
+Invalid Scop!
+Printing analysis 'Polly - Create polyhedral description of Scops' for region: '%0 => <Function Return>' in function 'test_chpl':
+Invalid Scop!

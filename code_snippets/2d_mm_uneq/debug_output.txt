@@ -1,0 +1,212 @@
+cs15btech11044@narmada:~/list_of_llvms/llvm_polly_fixes/generated_ir$ ../../llvm_polly_3/llvm_build/bin/opt affine_canonicalized_2mm_uneq.ll -O3 -polly -analyze -polly-process-unprofitable -pass-remarks=polly-detect -pass-remarks-missed=polly-detect
+remark: affine_2mm_uneq.chpl:30:0: The following errors keep this region from being a Scop.
+remark: affine_2mm_uneq.chpl:33:0: Failed to derive an affine function from the loop bounds.
+remark: affine_2mm_uneq.chpl:33:0: Invalid Scop candidate ends here.
+remark: affine_2mm_uneq.chpl:30:0: The following errors keep this region from being a Scop.
+remark: affine_2mm_uneq.chpl:33:0: The array subscript of ".pre" is not affine
+remark: affine_2mm_uneq.chpl:33:0: Invalid Scop candidate ends here.
+remark: affine_2mm_uneq.chpl:30:0: The following errors keep this region from being a Scop.
+remark: affine_2mm_uneq.chpl:33:0: The array subscript of ".pre" is not affine
+remark: affine_2mm_uneq.chpl:33:0: Invalid Scop candidate ends here.
+remark: affine_2mm_uneq.chpl:30:0: The following errors keep this region from being a Scop.
+remark: affine_2mm_uneq.chpl:33:0: The array subscript of ".pre" is not affine
+remark: affine_2mm_uneq.chpl:33:0: Invalid Scop candidate ends here.
+
+
+cs15btech11044@narmada:~/list_of_llvms/llvm_polly_fixes/generated_ir$ ../../llvm_polly_3/llvm_build/bin/opt affine_canonicalized_2mm_uneq.ll -O3 -polly-scops -polly-process-unprofitable -debug-only=polly-scops
+WARNING: You're attempting to print out a bitcode file.
+This is inadvisable as it may cause display problems. If
+you REALLY want to taste LLVM bitcode first-hand, you
+can force output with the `-f' option.
+
+    Function: m2m_chpl
+    Region: %.preheader3.us.us---%.loopexit4.loopexit.us
+    Max Loop Depth:  2
+    Invariant Accesses: {
+    }
+    Context:
+    [p_0, p_1, p_2, p_3, p_4] -> {  : -9223372036854775808 <= p_0 <= 9223372036854775807 and -9223372036854775808 <= p_1 <= 9223372036854775807 and -9223372036854775808 <= p_2 <= 9223372036854775800 and -9223372036854775808 <= p_3 <= 9223372036854775800 and -9223372036854775808 <= p_4 <= 9223372036854775807 }
+    Assumed Context:
+    [p_0, p_1, p_2, p_3, p_4] -> {  : p_4 > p_1 }
+    Invalid Context:
+    [p_0, p_1, p_2, p_3, p_4] -> {  : p_1 > 0 and (p_2 = 9223372036854775800 or (p_3 = 9223372036854775800 and p_0 > 0)) }
+    p0: %0
+    p1: %2
+    p2: ({8,+,8}<%.preheader5.us> * %.pre17)
+    p3: ({8,+,8}<%.preheader5.us> * %.pre18)
+    p4: %.pre19
+    Arrays {
+        double MemRef0[*]; // Element size 8
+        double MemRef1__phi; // Element size 8
+        double MemRef2[*]; // Element size 8
+        double MemRef3[*][%.pre19]; // Element size 8
+    }
+    Arrays (Bounds as pw_affs) {
+        double MemRef0[*]; // Element size 8
+        double MemRef1__phi; // Element size 8
+        double MemRef2[*]; // Element size 8
+        double MemRef3[*][ [p_4] -> { [] -> [(p_4)] } ]; // Element size 8
+    }
+    Alias Groups (2):
+        [[ <[p_0, p_1, p_2, p_3, p_4] -> { MemRef3[(1), (1)] : p_0 > 0 and p_1 > 0 }, [p_0, p_1, p_2, p_3, p_4] -> { MemRef3[(p_0), (1 + p_1)] : p_0 > 0 and p_1 > 0 }> <[p_0, p_1, p_2, p_3, p_4] -> { MemRef0[(1 + p_2 - floor((7 + 7p_2)/8))] : p_0 > 0 and p_1 > 0 }, [p_0, p_1, p_2, p_3, p_4] -> { MemRef0[(1 + p_1 + floor((p_2)/8))] : p_0 > 0 and p_1 > 0 }> ]]
+        [[ <[p_0, p_1, p_2, p_3, p_4] -> { MemRef2[(1 + p_3 - floor((7 + 7p_3)/8))] : p_0 > 0 and p_1 > 0 }, [p_0, p_1, p_2, p_3, p_4] -> { MemRef2[(1 + p_0 + floor((p_3)/8))] : p_0 > 0 and p_1 > 0 }> <[p_0, p_1, p_2, p_3, p_4] -> { MemRef0[(1 + p_2 - floor((7 + 7p_2)/8))] : p_0 > 0 and p_1 > 0 }, [p_0, p_1, p_2, p_3, p_4] -> { MemRef0[(1 + p_1 + floor((p_2)/8))] : p_0 > 0 and p_1 > 0 }> ]]
+    Statements {
+    	Stmt0
+            Domain :=
+                [p_0, p_1, p_2, p_3, p_4] -> { Stmt0[i0] : 0 <= i0 < p_1 };
+            Schedule :=
+                [p_0, p_1, p_2, p_3, p_4] -> { Stmt0[i0] -> [i0, 0, 0] };
+            ReadAccess :=	[Reduction Type: NONE] [Scalar: 0]
+                [p_0, p_1, p_2, p_3, p_4] -> { Stmt0[i0] -> MemRef0[o0] : p_2 + 8i0 < 8o0 <= 8 + p_2 + 8i0 };
+            MustWriteAccess :=	[Reduction Type: NONE] [Scalar: 1]
+                [p_0, p_1, p_2, p_3, p_4] -> { Stmt0[i0] -> MemRef1__phi[] };
+    	Stmt1
+            Domain :=
+                [p_0, p_1, p_2, p_3, p_4] -> { Stmt1[i0, i1] : 0 <= i0 < p_1 and 0 <= i1 < p_0 };
+            Schedule :=
+                [p_0, p_1, p_2, p_3, p_4] -> { Stmt1[i0, i1] -> [i0, 1, i1] };
+            MustWriteAccess :=	[Reduction Type: NONE] [Scalar: 1]
+                [p_0, p_1, p_2, p_3, p_4] -> { Stmt1[i0, i1] -> MemRef1__phi[] };
+            ReadAccess :=	[Reduction Type: NONE] [Scalar: 1]
+                [p_0, p_1, p_2, p_3, p_4] -> { Stmt1[i0, i1] -> MemRef1__phi[] };
+            ReadAccess :=	[Reduction Type: NONE] [Scalar: 0]
+                [p_0, p_1, p_2, p_3, p_4] -> { Stmt1[i0, i1] -> MemRef2[o0] : p_3 + 8i1 < 8o0 <= 8 + p_3 + 8i1 };
+            ReadAccess :=	[Reduction Type: NONE] [Scalar: 0]
+                [p_0, p_1, p_2, p_3, p_4] -> { Stmt1[i0, i1] -> MemRef3[1 + i1, 1 + i0] };
+            MustWriteAccess :=	[Reduction Type: NONE] [Scalar: 0]
+                [p_0, p_1, p_2, p_3, p_4] -> { Stmt1[i0, i1] -> MemRef0[o0] : p_2 + 8i0 < 8o0 <= 8 + p_2 + 8i0 };
+    }
+
+
+cs15btech11044@narmada:~/list_of_llvms/llvm_polly_fixes/generated_ir$ ../../llvm_polly_3/llvm_build/bin/opt affine_2mm_uneq.ll -O3 -analyze -polly-process-unprofitable -polly-canonicalize -polly-scops -debug-only=polly-scops
+Printing analysis 'Polly - Run canonicalization passes':
+Printing analysis 'Polly - Create polyhedral description of Scops' for region: '%22 => .loopexit.us.us' in function 'm2m_chpl':
+Invalid Scop!
+Printing analysis 'Polly - Create polyhedral description of Scops' for region: '.preheader.us.us => .loopexit61.us.loopexit' in function 'm2m_chpl':
+Invalid Scop!
+    Function: m2m_chpl
+    Region: %.preheader.us.us---%.loopexit61.us
+    Max Loop Depth:  2
+    Invariant Accesses: {
+    }
+    Context:
+    [p_0, p_1, p_2, p_3, p_4] -> {  : -9223372036854775808 <= p_0 <= 9223372036854775807 and -9223372036854775808 <= p_1 <= 9223372036854775807 and -9223372036854775808 <= p_2 <= 9223372036854775800 and -9223372036854775808 <= p_3 <= 9223372036854775800 and -9223372036854775808 <= p_4 <= 9223372036854775807 }
+    Assumed Context:
+    [p_0, p_1, p_2, p_3, p_4] -> {  : p_4 > p_1 }
+    Invalid Context:
+    [p_0, p_1, p_2, p_3, p_4] -> {  : p_1 > 0 and (p_2 = 9223372036854775800 or (p_3 = 9223372036854775800 and p_0 > 0)) }
+    p0: %1
+    p1: %3
+    p2: ({8,+,8}<%.preheader62.split.us> * %.pre77)
+    p3: ({8,+,8}<%.preheader62.split.us> * %.pre78)
+    p4: %.pre79
+    Arrays {
+        double MemRef0[*]; // Element size 8
+        double MemRef1__phi; // Element size 8
+        double MemRef2[*]; // Element size 8
+        double MemRef3[*][%.pre79]; // Element size 8
+    }
+    Arrays (Bounds as pw_affs) {
+        double MemRef0[*]; // Element size 8
+        double MemRef1__phi; // Element size 8
+        double MemRef2[*]; // Element size 8
+        double MemRef3[*][ [p_4] -> { [] -> [(p_4)] } ]; // Element size 8
+    }
+    Alias Groups (2):
+        [[ <[p_0, p_1, p_2, p_3, p_4] -> { MemRef3[(1), (1)] : p_0 > 0 and p_1 > 0 }, [p_0, p_1, p_2, p_3, p_4] -> { MemRef3[(p_0), (1 + p_1)] : p_0 > 0 and p_1 > 0 }> <[p_0, p_1, p_2, p_3, p_4] -> { MemRef0[(1 + p_2 - floor((7 + 7p_2)/8))] : p_0 > 0 and p_1 > 0 }, [p_0, p_1, p_2, p_3, p_4] -> { MemRef0[(1 + p_1 + floor((p_2)/8))] : p_0 > 0 and p_1 > 0 }> ]]
+        [[ <[p_0, p_1, p_2, p_3, p_4] -> { MemRef2[(1 + p_3 - floor((7 + 7p_3)/8))] : p_0 > 0 and p_1 > 0 }, [p_0, p_1, p_2, p_3, p_4] -> { MemRef2[(1 + p_0 + floor((p_3)/8))] : p_0 > 0 and p_1 > 0 }> <[p_0, p_1, p_2, p_3, p_4] -> { MemRef0[(1 + p_2 - floor((7 + 7p_2)/8))] : p_0 > 0 and p_1 > 0 }, [p_0, p_1, p_2, p_3, p_4] -> { MemRef0[(1 + p_1 + floor((p_2)/8))] : p_0 > 0 and p_1 > 0 }> ]]
+    Statements {
+    	Stmt0
+            Domain :=
+                [p_0, p_1, p_2, p_3, p_4] -> { Stmt0[i0] : 0 <= i0 < p_1 };
+            Schedule :=
+                [p_0, p_1, p_2, p_3, p_4] -> { Stmt0[i0] -> [i0, 0, 0] };
+            ReadAccess :=	[Reduction Type: NONE] [Scalar: 0]
+                [p_0, p_1, p_2, p_3, p_4] -> { Stmt0[i0] -> MemRef0[o0] : p_2 + 8i0 < 8o0 <= 8 + p_2 + 8i0 };
+            MustWriteAccess :=	[Reduction Type: NONE] [Scalar: 1]
+                [p_0, p_1, p_2, p_3, p_4] -> { Stmt0[i0] -> MemRef1__phi[] };
+    	Stmt1
+            Domain :=
+                [p_0, p_1, p_2, p_3, p_4] -> { Stmt1[i0, i1] : 0 <= i0 < p_1 and 0 <= i1 < p_0 };
+            Schedule :=
+                [p_0, p_1, p_2, p_3, p_4] -> { Stmt1[i0, i1] -> [i0, 1, i1] };
+            MustWriteAccess :=	[Reduction Type: NONE] [Scalar: 1]
+                [p_0, p_1, p_2, p_3, p_4] -> { Stmt1[i0, i1] -> MemRef1__phi[] };
+            ReadAccess :=	[Reduction Type: NONE] [Scalar: 1]
+                [p_0, p_1, p_2, p_3, p_4] -> { Stmt1[i0, i1] -> MemRef1__phi[] };
+            ReadAccess :=	[Reduction Type: NONE] [Scalar: 0]
+                [p_0, p_1, p_2, p_3, p_4] -> { Stmt1[i0, i1] -> MemRef2[o0] : p_3 + 8i1 < 8o0 <= 8 + p_3 + 8i1 };
+            ReadAccess :=	[Reduction Type: NONE] [Scalar: 0]
+                [p_0, p_1, p_2, p_3, p_4] -> { Stmt1[i0, i1] -> MemRef3[1 + i1, 1 + i0] };
+            MustWriteAccess :=	[Reduction Type: NONE] [Scalar: 0]
+                [p_0, p_1, p_2, p_3, p_4] -> { Stmt1[i0, i1] -> MemRef0[o0] : p_2 + 8i0 < 8o0 <= 8 + p_2 + 8i0 };
+    }
+Printing analysis 'Polly - Create polyhedral description of Scops' for region: '.preheader.us.us => .loopexit61.us' in function 'm2m_chpl':
+    Function: m2m_chpl
+    Region: %.preheader.us.us---%.loopexit61.us
+    Max Loop Depth:  2
+    Invariant Accesses: {
+    }
+    Context:
+    [p_0, p_1, p_2, p_3, p_4] -> {  : -9223372036854775808 <= p_0 <= 9223372036854775807 and -9223372036854775808 <= p_1 <= 9223372036854775807 and -9223372036854775808 <= p_2 <= 9223372036854775800 and -9223372036854775808 <= p_3 <= 9223372036854775800 and -9223372036854775808 <= p_4 <= 9223372036854775807 }
+    Assumed Context:
+    [p_0, p_1, p_2, p_3, p_4] -> {  : p_4 > p_1 }
+    Invalid Context:
+    [p_0, p_1, p_2, p_3, p_4] -> {  : p_1 > 0 and (p_2 = 9223372036854775800 or (p_3 = 9223372036854775800 and p_0 > 0)) }
+    p0: %1
+    p1: %3
+    p2: ({8,+,8}<%.preheader62.split.us> * %.pre77)
+    p3: ({8,+,8}<%.preheader62.split.us> * %.pre78)
+    p4: %.pre79
+    Arrays {
+        double MemRef0[*]; // Element size 8
+        double MemRef1__phi; // Element size 8
+        double MemRef2[*]; // Element size 8
+        double MemRef3[*][%.pre79]; // Element size 8
+    }
+    Arrays (Bounds as pw_affs) {
+        double MemRef0[*]; // Element size 8
+        double MemRef1__phi; // Element size 8
+        double MemRef2[*]; // Element size 8
+        double MemRef3[*][ [p_4] -> { [] -> [(p_4)] } ]; // Element size 8
+    }
+    Alias Groups (2):
+        [[ <[p_0, p_1, p_2, p_3, p_4] -> { MemRef3[(1), (1)] : p_0 > 0 and p_1 > 0 }, [p_0, p_1, p_2, p_3, p_4] -> { MemRef3[(p_0), (1 + p_1)] : p_0 > 0 and p_1 > 0 }> <[p_0, p_1, p_2, p_3, p_4] -> { MemRef0[(1 + p_2 - floor((7 + 7p_2)/8))] : p_0 > 0 and p_1 > 0 }, [p_0, p_1, p_2, p_3, p_4] -> { MemRef0[(1 + p_1 + floor((p_2)/8))] : p_0 > 0 and p_1 > 0 }> ]]
+        [[ <[p_0, p_1, p_2, p_3, p_4] -> { MemRef2[(1 + p_3 - floor((7 + 7p_3)/8))] : p_0 > 0 and p_1 > 0 }, [p_0, p_1, p_2, p_3, p_4] -> { MemRef2[(1 + p_0 + floor((p_3)/8))] : p_0 > 0 and p_1 > 0 }> <[p_0, p_1, p_2, p_3, p_4] -> { MemRef0[(1 + p_2 - floor((7 + 7p_2)/8))] : p_0 > 0 and p_1 > 0 }, [p_0, p_1, p_2, p_3, p_4] -> { MemRef0[(1 + p_1 + floor((p_2)/8))] : p_0 > 0 and p_1 > 0 }> ]]
+    Statements {
+    	Stmt0
+            Domain :=
+                [p_0, p_1, p_2, p_3, p_4] -> { Stmt0[i0] : 0 <= i0 < p_1 };
+            Schedule :=
+                [p_0, p_1, p_2, p_3, p_4] -> { Stmt0[i0] -> [i0, 0, 0] };
+            ReadAccess :=	[Reduction Type: NONE] [Scalar: 0]
+                [p_0, p_1, p_2, p_3, p_4] -> { Stmt0[i0] -> MemRef0[o0] : p_2 + 8i0 < 8o0 <= 8 + p_2 + 8i0 };
+            MustWriteAccess :=	[Reduction Type: NONE] [Scalar: 1]
+                [p_0, p_1, p_2, p_3, p_4] -> { Stmt0[i0] -> MemRef1__phi[] };
+    	Stmt1
+            Domain :=
+                [p_0, p_1, p_2, p_3, p_4] -> { Stmt1[i0, i1] : 0 <= i0 < p_1 and 0 <= i1 < p_0 };
+            Schedule :=
+                [p_0, p_1, p_2, p_3, p_4] -> { Stmt1[i0, i1] -> [i0, 1, i1] };
+            MustWriteAccess :=	[Reduction Type: NONE] [Scalar: 1]
+                [p_0, p_1, p_2, p_3, p_4] -> { Stmt1[i0, i1] -> MemRef1__phi[] };
+            ReadAccess :=	[Reduction Type: NONE] [Scalar: 1]
+                [p_0, p_1, p_2, p_3, p_4] -> { Stmt1[i0, i1] -> MemRef1__phi[] };
+            ReadAccess :=	[Reduction Type: NONE] [Scalar: 0]
+                [p_0, p_1, p_2, p_3, p_4] -> { Stmt1[i0, i1] -> MemRef2[o0] : p_3 + 8i1 < 8o0 <= 8 + p_3 + 8i1 };
+            ReadAccess :=	[Reduction Type: NONE] [Scalar: 0]
+                [p_0, p_1, p_2, p_3, p_4] -> { Stmt1[i0, i1] -> MemRef3[1 + i1, 1 + i0] };
+            MustWriteAccess :=	[Reduction Type: NONE] [Scalar: 0]
+                [p_0, p_1, p_2, p_3, p_4] -> { Stmt1[i0, i1] -> MemRef0[o0] : p_2 + 8i0 < 8o0 <= 8 + p_2 + 8i0 };
+    }
+Printing analysis 'Polly - Create polyhedral description of Scops' for region: '.preheader62.split.us => .loopexit61.us' in function 'm2m_chpl':
+Invalid Scop!
+Printing analysis 'Polly - Create polyhedral description of Scops' for region: '.preheader62.split.us => .loopexit63.loopexit' in function 'm2m_chpl':
+Invalid Scop!
+Printing analysis 'Polly - Create polyhedral description of Scops' for region: '.preheader62 => .loopexit63' in function 'm2m_chpl':
+Invalid Scop!
+Printing analysis 'Polly - Create polyhedral description of Scops' for region: '.split => .loopexit63' in function 'm2m_chpl':
+Invalid Scop!
+Printing analysis 'Polly - Create polyhedral description of Scops' for region: '%0 => <Function Return>' in function 'm2m_chpl':
+Invalid Scop!
+

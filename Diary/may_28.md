@@ -6,4 +6,4 @@
 
 
 ### Patch for updating Scop::addUserContext() to C++ interface
-- Another patch to update isl interface in Polly to C++ has been created and committed.
+- Another patch to update isl interface in Polly to C++ has been created and committed ([Link](https://reviews.llvm.org/D47438)).

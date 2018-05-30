@@ -1,0 +1,36 @@
+Without Polly:
+ Performance counter stats for '../../../../llvm_polly_3/llvm_build/bin/lli -entry-function=m2m_chpl chpl__module-nopt.bc':
+
+      16439.487845      task-clock (msec)         #    0.999 CPUs utilized          
+             1,382      context-switches          #    0.084 K/sec                  
+                 0      cpu-migrations            #    0.000 K/sec                  
+             6,060      page-faults               #    0.369 K/sec                  
+    55,879,125,055      cycles                    #    3.399 GHz                      (83.31%)
+    32,735,827,225      stalled-cycles-frontend   #   58.58% frontend cycles idle     (83.31%)
+    14,003,167,022      stalled-cycles-backend    #   25.06% backend cycles idle      (66.69%)
+    54,935,811,454      instructions              #    0.98  insn per cycle         
+                                                  #    0.60  stalled cycles per insn  (83.34%)
+     9,602,347,798      branches                  #  584.103 M/sec                    (83.33%)
+       119,320,146      branch-misses             #    1.24% of all branches          (83.36%)
+
+      16.455216560 seconds time elapsed
+
+
+With Polly:
+ Performance counter stats for '../../../../llvm_polly_3/llvm_build/bin/lli -entry-function=m2m_chpl chpl_polly.ll':
+
+      11639.301878      task-clock (msec)         #    0.999 CPUs utilized          
+               979      context-switches          #    0.084 K/sec                  
+                 0      cpu-migrations            #    0.000 K/sec                  
+             5,176      page-faults               #    0.445 K/sec                  
+    39,372,885,955      cycles                    #    3.383 GHz                      (83.30%)
+    22,923,872,812      stalled-cycles-frontend   #   58.22% frontend cycles idle     (83.33%)
+     9,970,406,429      stalled-cycles-backend    #   25.32% backend cycles idle      (66.71%)
+    39,400,426,592      instructions              #    1.00  insn per cycle         
+                                                  #    0.58  stalled cycles per insn  (83.34%)
+     6,885,877,015      branches                  #  591.606 M/sec                    (83.33%)
+        92,093,102      branch-misses             #    1.34% of all branches          (83.35%)
+
+      11.650097962 seconds time elapsed
+
+

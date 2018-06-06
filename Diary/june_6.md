@@ -1,0 +1,6 @@
+## June 6th Diary Entry
+
+### Debugging the inability of the Polly to detect Chapel's SCoP's
+- When applying `-polly-detect` to the Chapel's SCoP's, the pass remarks reported aliasing error. It was ignored by applying `-polly-ignore-aliasing` flag. In spite of that, error remark of Non Affine Access showed up, reporting the non-affine access of the type `(8 * (({1,+,1}<nuw><nsw><%49> * %55) + {1,+,1}<nuw><nsw><%50>))<nsw>` (denoted in the form of SCEV expressions).
+- I checked out the main block structure (the basic block responsible for the main operation in the loop) both for matmul (2mm) and 2d loop initialization case (For comparision). The Array access mechanism was almost same for both the cases. Infact, we have to access 3 arrays in the matmul case, obtain the respective value and then perform the necessary operation. Yet when I ran `-polly-scops` (and subsequently `-polly-codegen`), for 2d loop initialization case, it had showed the SCoP as well as modified the code accordingly. In the matmul example, SCoP was getting detected only after applying `-polly-ignore-aliasing` and `-polly-allow-nonaffine` and even after preserving these flags, `-polly-codegen` was unable to modify the code.
+

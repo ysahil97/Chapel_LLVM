@@ -1,41 +1,42 @@
-config const n = 10;
-
-var A:[1..n,1..n] real;
-var B:[1..n,1..n] real;
-var C:[1..n,1..n] real;
+module matrix_multiplication {
 
 
-proc init_matrix(){
- for i in 1..n{
-  for j in 1..n{
-   A(i,j) = i+j;
-  }
- }
+	proc init_matrix(A:[0..999,0..999] real, B:[0..999,0..999] real, C:[0..999,0..999] real){
+		for i in 0..999{
+			for j in 0..999{
+				A(i,j) = i+j;
+			}
+		}
 
- for i in 1..n{
-  for j in 1..n{
-   B(i,j) = i+j*5;
-  }
- }
+		for i in 0..999{
+			for j in 0..999{
+				B(i,j) = i+j*5;
+			}
+		}
 
- for i in 1..n{
-  for j in 1..n{
-   C(i,j) = 0;
-  }
- }
+		for i in 0..999{
+			for j in 0..999{
+				C(i,j) = 0;
+			}
+		}
+	}
+
+	proc m2m(A:[0..999,0..999] real, B:[0..999,0..999] real, C:[0..999,0..999] real){
+		for i in 0..999{
+			for j in 0..999{
+				for k in 0..999{
+					C(i,j) = C(i,j) +A(i,k)*B(k,j);
+				}
+			}
+		}
+	}
+
+	proc main(){
+		var A:[0..999,0..999] real;
+	        var B:[0..999,0..999] real;
+       		var C:[0..999,0..999] real;
+
+		init_matrix(A,B,C);
+		m2m(A,B,C);
+	}
 }
-
-proc m2m(){
-
- init_matrix();
-
- for i in 1..n{
-  for j in 1..n{
-   for k in 1..n{
-     C(i,j) = C(i,j) +A(i,j)*B(i,j);
-   }
-  }
- }
-
-}
-m2m();

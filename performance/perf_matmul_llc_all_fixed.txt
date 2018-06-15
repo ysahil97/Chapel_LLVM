@@ -1,0 +1,33 @@
+ Performance counter stats for './m2m_plain' (10 runs):
+
+       7577.923919      task-clock (msec)         #    1.005 CPUs utilized            ( +-  0.34% )
+             1,124      context-switches          #    0.148 K/sec                    ( +-  1.45% )
+                37      cpu-migrations            #    0.005 K/sec                    ( +-  0.73% )
+            10,836      page-faults               #    0.001 M/sec                    ( +-  1.82% )
+    25,200,490,269      cycles                    #    3.326 GHz                      ( +-  0.35% )  (83.41%)
+    17,087,946,348      stalled-cycles-frontend   #   67.81% frontend cycles idle     ( +-  0.53% )  (83.46%)
+     6,815,039,762      stalled-cycles-backend    #   27.04% backend cycles idle      ( +-  1.51% )  (66.70%)
+    22,257,614,395      instructions              #    0.88  insn per cycle         
+                                                  #    0.77  stalled cycles per insn  ( +-  0.06% )  (83.27%)
+     1,050,648,538      branches                  #  138.646 M/sec                    ( +-  0.19% )  (83.13%)
+         1,892,744      branch-misses             #    0.18% of all branches          ( +-  3.82% )  (83.29%)
+
+       7.540237374 seconds time elapsed                                          ( +-  0.34% )
+
+
+ Performance counter stats for './m2m_polly' (10 runs):
+
+       1229.376147      task-clock (msec)         #    1.035 CPUs utilized            ( +-  0.21% )
+               402      context-switches          #    0.327 K/sec                    ( +-  3.23% )
+                36      cpu-migrations            #    0.030 K/sec                    ( +-  0.42% )
+             7,255      page-faults               #    0.006 M/sec                    ( +-  0.01% )
+     3,668,776,796      cycles                    #    2.984 GHz                      ( +-  0.30% )  (83.76%)
+       362,436,933      stalled-cycles-frontend   #    9.88% frontend cycles idle     ( +-  1.70% )  (84.04%)
+       187,323,712      stalled-cycles-backend    #    5.11% backend cycles idle      ( +-  4.11% )  (66.93%)
+     5,858,706,700      instructions              #    1.60  insn per cycle         
+                                                  #    0.06  stalled cycles per insn  ( +-  0.26% )  (83.08%)
+       102,086,250      branches                  #   83.039 M/sec                    ( +-  2.70% )  (82.08%)
+           970,949      branch-misses             #    0.95% of all branches          ( +-  7.04% )  (83.19%)
+
+       1.188084092 seconds time elapsed                                          ( +-  0.21% )
+

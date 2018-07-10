@@ -1,0 +1,3 @@
+## July 10th entry
+
+- Regarding the weird bug of `isl_map`, I managed to progress further and it had turned out that we were referring to DimensionSizes whereas our case was concerned with strides. So a unifying change was being made. Some other nitpicks had to be done to further solve the later assertion failures. Now, the SCoP is getting perfectly detected, but it is getting dismissed due to late unfeasible context. The context was unfeasible at the early stage meaning, there is a part of code which is changing context whilst in the middle of building a a SCoP. That happens to be starting point for eliminating such a bail out.

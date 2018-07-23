@@ -1,0 +1,5 @@
+### Some links for prototyping with Chapel
+
+- Where do we set up the LLVM optimization pipeline? [https://github.com/chapel-lang/chapel/blob/master/compiler/util/clangUtil.cpp#L2579](https://github.com/chapel-lang/chapel/blob/master/compiler/util/clangUtil.cpp#L2579)
+- Where do we set up the link line? [https://github.com/chapel-lang/chapel/blob/master/compiler/util/clangUtil.cpp#L2863](https://github.com/chapel-lang/chapel/blob/master/compiler/util/clangUtil.cpp#L2863)
+- How to add a command line option? add variable declarations here [https://github.com/chapel-lang/chapel/blob/master/compiler/main/driver.cpp#L176](https://github.com/chapel-lang/chapel/blob/master/compiler/main/driver.cpp#L176) and [https://github.com/chapel-lang/chapel/blob/master/compiler/include/driver.h#L143](https://github.com/chapel-lang/chapel/blob/master/compiler/include/driver.h#L143) and then add it to the table here [ https://github.com/chapel-lang/chapel/blob/master/compiler/main/driver.cpp#L990]( https://github.com/chapel-lang/chapel/blob/master/compiler/main/driver.cpp#L990)

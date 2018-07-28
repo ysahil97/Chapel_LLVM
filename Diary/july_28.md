@@ -1,0 +1,3 @@
+## July 28th Diary Entry
+
+- I got the access of my old GPU server back and resumed the work there itself. At first, I tried introducting SizesPerDim field in `ShapeInfo` and added subsequent wrapper functions to access this field. This approach worked and it was updated in Phabricator review. The next step was to optimize this by reducing the number of parameters. The reason for this is that transfer of data from Host to Device in GPU case is costly. It would be better if block values are removed as arguments and calculated from the dimension sizes instead within the indexing function and wherever indexing is required. So I tried this approach. Necessary changes were also done on Chapel frontend as well. This linkage also worked and it is updated on phabricator review.

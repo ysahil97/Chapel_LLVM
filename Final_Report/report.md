@@ -66,7 +66,7 @@ On the Chapel front, the indexing function has been successfully implemented int
 The preliminary results for standardized matrix multiplication (all matrices of size 1000 x 1000) using the `collective-invariant-loads` patch were conducted using `perf stat -n 10`.
 
 | Plain Chapel Code | 7.54 seconds |
-|---------------------|------------|
+|                   |            |
 | Polly optimized code | 1.18 seconds| 
 
 This huge performance gain encourages us to further pursue PPCGCodegen for Chapel.

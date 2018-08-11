@@ -90,6 +90,7 @@ The results are obtained as follows:
 
 #### matrix multiplication
 Size: 1000
+
 | Binary | Time (In Seconds) |
 |---|---|
 | Without Polly | 27.5273 |
@@ -97,6 +98,7 @@ Size: 1000
 | Polly(GPU) | 0.138 |
 
 Size: 5000
+
 | Binary | Time (In Seconds) |
 |---|---|
 | Without Polly | 16082.7235 |

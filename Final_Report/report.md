@@ -13,7 +13,7 @@ Analyze the cause of failure of Polly in Chapel framework using some simple exam
 
 ## Steps Taken
 
-1. The general idea to proceed with this project was to iteratively check Polly for proper SCoP Detection and it's code generation using simple Chapel loops.
+1. The general idea to proceed with this project is to iteratively check Polly for proper SCoP Detection and it's code generation using simple Chapel loops.
 2. To begin with, initially the Chapel generated IR was causing version issues which forbade Polly to analyze it's IR. A PR(link is [here](https://github.com/chapel-lang/chapel/pull/9567)) has been made for Chapel to work with master LLVM and Polly and has been merged into master branch.
 3. We first used 1-D array initialization as our starting point to check the current status of Chapel-Polly pipeline. For this case, it is able to detect the SCoP's and also generate polly-optimised code. 
 4. We now move on toward the 2-D array initialization and matrix multiplication problems. Here, Polly failed to recognize the SCoP's of Chapel Loops. However with the help of `-polly-invariant-load-hoisting`, SCoP's were getting generated properly. In addition to this, `-polly-codegen` also generated polly-specific code. However these SCoP's were discovered only due to `-polly-process-unprofitable` which were suboptimal. In the absence of this, no SCoP's were detected.
@@ -57,7 +57,7 @@ The Phabricator Review which handles the indexing function method can be found [
     * Name mangling of `polly_array_index()` is enabled to append the number of dimensions of the array accessed. PR can be found [Here](https://github.com/chapel-lang/chapel/pull/10745).
     * Adding GPURuntime library to the list of library files to be linked at link-time.
 
-9. Right now, we have assumed that the loop to be optimized would be present in a function named `test_polly()` which Polly would selectively optimize and generate Polly optimized code.
+9. Right now, we have assumed that the loop to be optimized would be present in a function called `test_polly()` which Polly would selectively optimize and generate Polly optimized code.
 
 ## Current status of work
 
@@ -114,14 +114,17 @@ Polly tries to model the SCoP detected into a polyhedra over a N-dimensional spa
 
 ## Scope of Improvement
 
-Integration of Polly within Chapel provides a lot of scope in terms of improvement. Currently, the SCoP detected by Polly is sub-optimal in many ways. One of the main reasons being there are a lot of parameters involved within the context which can significantly affect the compile-time due to Polly. Another reason is that all of the above results and benchmarking were done under the assumption that RTC's are always set to true. Analysis of RTC failure is yet to be done. In chapel, the actual integration in terms of adding the required Polly passes and adding `libGPURuntime.so` to the list of link files is also yet to be done. The Polly Codegen can still be further simplified to provide better performance in both the architechtures.
+Integration of Polly within Chapel provides a lot of scope in terms of improvement. Currently, the SCoP detected by Polly is sub-optimal in many ways. One of the main reasons being there are a lot of parameters involved within the context which can significantly affect the compile-time due to Polly. Another reason is that all of the above results and benchmarking were done under the assumption that RTC's are always set to true. Analysis of RTC failure is yet to be done. In Chapel, the actual integration in terms of adding the required Polly passes and adding `libGPURuntime.so` to the list of link files is also yet to be done. The Polly Codegen can still be further simplified to provide better performance in both the architechtures.
 In terms of the nature of the loops, the work can also be extended to detect strided Chapel Arrays. 
 
 The current results are based on only two simple yet common examples. There can be two ways to further extend the testing phase:
 1. We can port some simple examples from Polybench or LLVM's Test Suite (which are of interest to us) into Chapel and work upon those.
 2. Chapel also has it's own test suite of programs which can be used to analyze further our pipeline.
 
+We are working on understanding the exact impact of this indexing approach by performing improvements related to code-generation, scop detection and optimal transfer of parameters involved for indexing. In parallel, we are also testing whether the one-off `polly_array_index` method could be coherently be introduced within LLVM. We are working on an RFC ([Link](https://docs.google.com/document/d/1OtkKYm1zGFw1U1ilGzvjk6vzYFvo6zvO1LZM38AZF50/edit?usp=sharing)) to document this purpose.
+
 It is now more clear that introducing Polly and its set of optimizations to Chapel benefits the compiler both in terms of performance as well as providing an extra option to different architecture (GPGPU's), thereby reaping the benefits of both. This can bring upon a huge impact on Chapel Programs, attaining significant speedups.
+
 
 ## Future work
 

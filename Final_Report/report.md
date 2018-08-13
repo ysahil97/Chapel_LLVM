@@ -52,12 +52,14 @@ In this loop block, `%52` is considered to be loop-invariant but `%53`,`%54`,`%5
     * While this resulted in correct memory-error free codegen in GPU for the standard case, it couldn't handle Arrays with custom domains for every dimensions. The resolution was to simply pass on the indices as 0-based to Polly. This is possible because Chapel Compiler provides the option to use an alternate base address which is suitable for 0-based indices (`-searlyShiftData` config parameter).So the general strategy was to discard the usage of `factoredOffs` and instead subtract offset values from its corresponding indices.However, due to this method, we stumbled upon an unknown anomaly in Chapel that integer tuples as arguments were behaving as call-by reference while they should behave as call-by-value. Relevant PR to resolve this is [Here](https://github.com/chapel-lang/chapel/issues/10711). Ultimately, Arrays with custom domains are also detected by Polly and proper CPU and GPU polly optimized code is getting generated.
 The Phabricator Review which handles the indexing function method can be found [Here](https://reviews.llvm.org/D49024).
 
-8. Integrating the Pipeline
+8. Till now, the CPU and GPU code was getting generated under the assumption that the RTC's were always evaluating to be true. The problem associated with the RTC checks lied in improper evaluation of Invalid context of the SCoP. After further debugging, it was found out that the constants used in Invalid context for comparision required 64 bits. Polly currently considers all integer constant having bit width strictly greater than 63 bits to be `LargeInts`, the commit which brought this change didn't insist on 64 bits to be considered as too large. A PR (link is [Here]() ) has been created to include integers with 64-bit width as within the limits.
+
+9. Integrating the Pipeline
 
     * Name mangling of `polly_array_index()` is enabled to append the number of dimensions of the array accessed. PR can be found [Here](https://github.com/chapel-lang/chapel/pull/10745).
     * Adding GPURuntime library to the list of library files to be linked at link-time.
 
-9. Right now, we have assumed that the loop to be optimized would be present in a function called `test_polly()` which Polly would selectively optimize and generate Polly optimized code.
+10. Right now, we have assumed that the loop to be optimized would be present in a function called `test_polly()` which Polly would selectively optimize and generate Polly optimized code.
 
 ## Current status of work
 
@@ -68,6 +70,48 @@ As of now, Polly can detect Chapel Loops which can have custom domains for every
 
 
 ## Results
+
+Tests were run on the machine with the following stats
+
+#### CPU
+```
+Architecture:          x86_64
+CPU op-mode(s):        32-bit, 64-bit
+Byte Order:            Little Endian
+CPU(s):                56
+On-line CPU(s) list:   0-55
+Thread(s) per core:    2
+Core(s) per socket:    14
+Socket(s):             2
+NUMA node(s):          2
+Vendor ID:             GenuineIntel
+CPU family:            6
+Model:                 79
+Model name:            Intel(R) Xeon(R) CPU E5-2690 v4 @ 2.60GHz
+Stepping:              1
+CPU MHz:               1200.000
+CPU max MHz:           2600.0000
+CPU min MHz:           1200.0000
+BogoMIPS:              5195.92
+Virtualization:        VT-x
+L1d cache:             32K
+L1i cache:             32K
+L2 cache:              256K
+L3 cache:              35840K
+```
+
+#### GPU
+```
+Model: 		 Tesla P100-PCIE-12GB
+IRQ:   		 154
+GPU UUID: 	 GPU-cca49a44-59ee-4412-1284-f4741454c98b
+Video BIOS: 	 86.00.3a.00.02
+Bus Type: 	 PCIe
+DMA Size: 	 47 bits
+DMA Mask: 	 0x7fffffffffff
+Bus Location: 	 0000:0b:00.0
+Device Minor: 	 0
+```
 
 The preliminary results for standardized matrix multiplication (all matrices of size 1000 x 1000) using the `collective-invariant-loads` patch were conducted using `perf stat -r 10`.
 
@@ -90,9 +134,9 @@ The results are obtained as follows:
 
 | Binary | Time (In Seconds) |
 |---|---|
-| Without Polly | 2.7108 |
-| Polly(CPU) | 2.604 |
-| Polly(GPU) | 0.0029 |
+| Without Polly | 2.625 |
+| Polly(CPU) | 2.612 |
+| Polly(GPU) | 3.324 |
 
 #### matrix multiplication
 Size: 1000
@@ -101,7 +145,7 @@ Size: 1000
 |---|---|
 | Without Polly | 27.5273 |
 | Polly(CPU) | 7.13 |
-| Polly(GPU) | 0.138 |
+| Polly(GPU) | 0.87 |
 
 Size: 5000
 
@@ -109,7 +153,7 @@ Size: 5000
 |---|---|
 | Without Polly | 8102.7239 |
 | Polly(CPU) | 4334.082 |
-| Polly(GPU) | 15.89 |
+| Polly(GPU) | 17.07 |
 
 ## Reasons for Polly's performance
 
@@ -117,7 +161,7 @@ Polly tries to model the SCoP detected into a polyhedra over a N-dimensional spa
 
 ## Scope of Improvement
 
-Integration of Polly within Chapel provides a lot of scope in terms of improvement. Currently, the SCoP detected by Polly is sub-optimal in many ways. One of the main reasons being there are a lot of parameters involved within the context which can significantly affect the compile-time due to Polly. Another reason is that all of the above results and benchmarking were done under the assumption that RTC's are always set to true. Analysis of RTC failure is yet to be done. In Chapel, the actual integration in terms of adding the required Polly passes and adding `libGPURuntime.so` to the list of link files is also yet to be done. The Polly Codegen can still be further simplified to provide better performance in both the architechtures.
+Integration of Polly within Chapel provides a lot of scope in terms of improvement. Currently, the SCoP detected by Polly is sub-optimal in many ways.One of the main reasons being there are a lot of parameters involved within the context which can significantly affect the compile-time due to Polly.In Chapel, the actual integration in terms of adding the required Polly passes and adding `libGPURuntime.so` to the list of link files is also yet to be done. The Polly Codegen can still be further simplified to provide better performance in both the architechtures.
 In terms of the nature of the loops, the work can also be extended to detect strided Chapel Arrays. 
 
 The current results are based on only two simple yet common examples. There can be two ways to further extend the testing phase:

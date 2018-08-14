@@ -18,7 +18,9 @@ Analyze the cause of failure of Polly in Chapel framework using some simple exam
 3. We first used 1-D array initialization as our starting point to check the current status of Chapel-Polly pipeline. For this case, it is able to detect the SCoP's and also generate polly-optimised code. 
 4. We now move on toward the 2-D array initialization and matrix multiplication problems. Here, Polly failed to recognize the SCoP's of Chapel Loops. However with the help of `-polly-invariant-load-hoisting`, SCoP's were getting generated properly. In addition to this, `-polly-codegen` also generated polly-specific code. However these SCoP's were discovered only due to `-polly-process-unprofitable` which were suboptimal. In the absence of this, no SCoP's were detected.
 
-    * On further modification of Chapel matmul program, `-polly-detect` was giving error remarks related to aliasing and non affine access. We had triedto analyze the cause of failure for this and stumbled across a rather interesting bug in Polly. Suppose there is a set of instructions which are chained to each other in the form of alternating GEP's and load instructions. If the starting instruction is loop invariant then all the instructions should be collectively invariant. For eg:
+    * On further modification of Chapel matmul program, `-polly-detect` was giving error remarks related to aliasing and non affine access. We had triedto analyze the cause of failure for this and stumbled across a rather interesting bug in Polly. Suppose there is a set of instructions which are chained to each other in the form of alternating GEP's and load instructions. If the starting instruction is loop invariant then all the instructions should be collectively invariant.
+
+    *For eg:
 
 ```
 ; <label>:51:                                     ; preds = %50, %51

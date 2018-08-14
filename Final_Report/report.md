@@ -18,20 +18,18 @@ Analyze the cause of failure of Polly in Chapel framework using some simple exam
 3. We first used 1-D array initialization as our starting point to check the current status of Chapel-Polly pipeline. For this case, it is able to detect the SCoP's and also generate polly-optimised code. 
 4. We now move on toward the 2-D array initialization and matrix multiplication problems. Here, Polly failed to recognize the SCoP's of Chapel Loops. However with the help of `-polly-invariant-load-hoisting`, SCoP's were getting generated properly. In addition to this, `-polly-codegen` also generated polly-specific code. However these SCoP's were discovered only due to `-polly-process-unprofitable` which were suboptimal. In the absence of this, no SCoP's were detected.
 
-    * On further modification of Chapel matmul program, `-polly-detect` was giving error remarks related to aliasing and non affine access. We had triedto analyze the cause of failure for this and stumbled across a rather interesting bug in Polly. Suppose there is a set of instructions which are chained to each other in the form of alternating GEP's and load instructions. If the starting instruction is loop invariant then all the instructions should be collectively invariant.
-
-    *For eg:
+    * On further modification of Chapel matmul program, `-polly-detect` was giving error remarks related to aliasing and non affine access. We had triedto analyze the cause of failure for this and stumbled across a rather interesting bug in Polly. Suppose there is a set of instructions which are chained to each other in the form of alternating GEP's and load instructions. If the starting instruction is loop invariant then all the instructions should be collectively invariant. For eg:
 
 ```
 ; <label>:51:                                     ; preds = %50, %51
   %.02 = phi i64 [ 1, %50 ], [ %84, %51 ], !dbg !14
-  %52 = getelementptr inbounds %_array_DefaultRectangularArr_2_int64_t_F__real64_int64_t, %_array_DefaultRectangularArr_2_int64_t_F__real64_int64_t* %2, i64 0, i32 1, !dbg !15
-  %53 = load %chpl_DefaultRectangularArr_2_int64_t_F__real64_int64_t_object*, %chpl_DefaultRectangularArr_2_int64_t_F__real64_int64_t_object** %52, align 8, !dbg !15, !tbaa !16
-  %54 = getelementptr inbounds %chpl_DefaultRectangularArr_2_int64_t_F__real64_int64_t_object, %chpl_DefaultRectangularArr_2_int64_t_F__real64_int64_t_object* %53, i64 0, i32 3, i64 0, !dbg !15
+  %52 = getelementptr inbounds `%_array_DefaultRectangularArr_2_int64_t_F__real64_int64_t, %_array_DefaultRectangularArr_2_int64_t_F__real64_int64_t*` %2, i64 0, i32 1, !dbg !15
+  %53 = load `%chpl_DefaultRectangularArr_2_int64_t_F__real64_int64_t_object*, %chpl_DefaultRectangularArr_2_int64_t_F__real64_int64_t_object**` %52, align 8, !dbg !15, !tbaa !16
+  %54 = getelementptr inbounds `%chpl_DefaultRectangularArr_2_int64_t_F__real64_int64_t_object, %chpl_DefaultRectangularArr_2_int64_t_F__real64_int64_t_object*` %53, i64 0, i32 3, i64 0, !dbg !15
   %55 = load i64, i64* %54, align 8, !dbg !15, !tbaa !28
   %56 = mul nsw i64 %55, %.0, !dbg !15
   %57 = add nsw i64 %56, %.01, !dbg !15
-  %58 = getelementptr inbounds %chpl_DefaultRectangularArr_2_int64_t_F__real64_int64_t_object, %chpl_DefaultRectangularArr_2_int64_t_F__real64_int64_t_object* %53, i64 0, i32 8, !dbg !15
+  %58 = getelementptr inbounds `%chpl_DefaultRectangularArr_2_int64_t_F__real64_int64_t_object, %chpl_DefaultRectangularArr_2_int64_t_F__real64_int64_t_object*` %53, i64 0, i32 8, !dbg !15
   %59 = load double*, double** %58, align 8, !dbg !15, !tbaa !29
   %60 = getelementptr inbounds double, double* %59, i64 %57, !dbg !15
   %61 = load double, double* %60, align 8, !dbg !15, !tbaa !42

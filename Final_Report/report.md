@@ -66,7 +66,7 @@ The Phabricator Review which handles the indexing function method can be found [
 On the Chapel front, the indexing function has been successfully implemented into Chapel compiler. The official upstreaming is in progress. Whereas for Polly, the existing feature of analyzing the `polly_array_index()` call has been successfully working in local version of Polly. However there can be further optimizations on this feature and hence there needs further work on this approach. The integration of Chapel and Polly is also in progress but with the help of a set of commands, we can essentially compile Chapel code using it's LLVM+Polly copy. It will get fixed soon.
 As of now, Polly can detect Chapel Loops which can have custom domains for every dimension (for eg: `Arr[1..5][6..8][25..89]`).
 
-<img src="ChapelScop_1.png" width="50%">
+<img src="ChapelScop_1.png" width="60%">
 
 ## Results
 

@@ -36,7 +36,6 @@ Analyze the cause of failure of Polly in Chapel framework using some simple exam
 ``` 
 
 In this loop block, `%52` is considered to be loop-invariant but `%53`,`%54`,`%55`,`%58`,`%59` should also be loop-invariant as they are relying on a previous instruction which is inductively loop-invariant. This type of invariant detection was not present in polly initially. This phabricator review ([link](https://reviews.llvm.org/D48026)) deals with introducing detection of collective invariant loads.
-
     * With the help of this patch, this solves both aliasing and non-affine access issues given by optimization remark emitter. The SCoP's generated were also optimal and experiments on the generated code showed huge performance improvements over the normal case.
 
     * However the solution given by this patch was only a temporary one and could not handle more generalized cases like arrays with offsets or arrays with custom defined domains (Eg: Arr\[1..4\]\[2..6\]). It also didn't handle the cases where the iteration domains were not 0-based. Thus alternative methods were discussed, which could handle the generalizations effectively.
